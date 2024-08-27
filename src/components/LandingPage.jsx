@@ -4,7 +4,7 @@ import { IoMdSearch } from "react-icons/io";
 import Upload from "./Upload";
 import ListItem from "./ListItem";
 import { useNavigate } from "react-router-dom";
-import { account, db, databaseId, collectionId } from "../appwriteConfig";
+import { account, db } from "../appwriteConfig";
 
 const LandingPage = () => {
   const [list, setList] = useState([]);
@@ -14,6 +14,9 @@ const LandingPage = () => {
   const [selectedMonth, setSelectedMonth] = useState("");
   const navigate = useNavigate();
   const [holder, setHolder] = React.useState("");
+
+  const databaseId = process.env.REACT_APP_APPWRITE_DATABASE_ID;
+  const collectionId = process.env.REACT_APP_APPWRITE_COLLECTION_ID;
 
   const getUser = async () => {
     try {

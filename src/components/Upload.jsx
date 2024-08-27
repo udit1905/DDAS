@@ -4,7 +4,7 @@ import Modal from "react-modal";
 import { FileUploader } from "react-drag-drop-files";
 import ReactLoading from "react-loading";
 import { BiSolidError } from "react-icons/bi";
-import { db, databaseId, collectionId } from "../appwriteConfig";
+import { db } from "../appwriteConfig";
 
 const customStyles = {
   content: {
@@ -17,8 +17,7 @@ const customStyles = {
   },
 };
 
-const JWT =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiI1ZGE0ODQxZi0yZDRhLTQ3YjktOTk3NC0xYTlmMmY2Mjg4YTAiLCJlbWFpbCI6InNob2JoaXRzaW5naDI1MDMyMDAzQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxLCJpZCI6IkZSQTEifSx7ImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxLCJpZCI6Ik5ZQzEifV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiIzMzg5Y2MyZDExNTJiYmFhOTgyZiIsInNjb3BlZEtleVNlY3JldCI6IjIxMTBhOGE3OTFiZmQzMmUyMGJmOTQ1YWFjMjM2ZjI0ZTA2MmM0MTNiOWVkNzQ3NGY4YjdhMGVlNjNhNjdiMzYiLCJleHAiOjE3NTYwNjE1ODV9.UE4bhKOQQpAs-Qa_iKqpCL60Ajg9IBJbyQodwHNWAAw";
+const JWT = process.env.REACT_APP_JWT;
 
 const Upload = ({ list, setList, holder }) => {
   let subtitle;
@@ -30,6 +29,9 @@ const Upload = ({ list, setList, holder }) => {
   const [dName, setDName] = useState("");
   const [loading, setLoading] = useState(false);
   const [hash, setHash] = useState("");
+
+  const databaseId = process.env.REACT_APP_APPWRITE_DATABASE_ID;
+  const collectionId = process.env.REACT_APP_APPWRITE_COLLECTION_ID;
 
   const handleChange = (file) => {
     setFile(file);
@@ -75,59 +77,6 @@ const Upload = ({ list, setList, holder }) => {
     }
   };
 
-  // const uploadDoc = async () => {
-  //   if (nfile === "" || dName === "" || file === null) {
-  //     alert("All fields are mandatory");
-  //     return;
-  //   }
-
-  //   setLoading(true);
-  //   try {
-  //     const cid = await getIpfsHash(file);
-  //     setHash(cid);
-
-  //     const today = new Date();
-  //     const monthNames = [
-  //       "January",
-  //       "February",
-  //       "March",
-  //       "April",
-  //       "May",
-  //       "June",
-  //       "July",
-  //       "August",
-  //       "September",
-  //       "October",
-  //       "November",
-  //       "December",
-  //     ];
-  //     const currentDate = `${today.getFullYear()} ${
-  //       monthNames[today.getMonth()]
-  //     }`;
-
-  //     const response = await db.createDocument(
-  //       databaseId,
-  //       collectionId,
-  //       "unique()",
-  //       {
-  //         name: nfile,
-  //         owner: holder,
-  //         cid: cid,
-  //         dept: dName,
-  //         time: currentDate,
-  //       }
-  //     );
-  //     console.log("File Document written with ID: ", response.$id);
-
-  //     setList([...list, { ...response, id: response.$id }]);
-  //     alert("Document Uploaded");
-  //   } catch (e) {
-  //     console.error("Error adding document: ", e);
-  //     alert("Failed to upload document. Please try again.");
-  //   } finally {
-  //     closeModal();
-  //   }
-  // };
   async function uploadDoc() {
     if (nfile === "" || dName === "" || file === null) {
       alert("All fields are mandatory");
